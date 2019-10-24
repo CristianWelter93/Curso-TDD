@@ -5,9 +5,7 @@ import leilao.Lance;
 import leilao.Leilao;
 import leilao.Usuario;
 import leilao.builder.CriadorDeLeilao;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.*;
 
 import java.util.List;
 
@@ -23,9 +21,24 @@ public class TesteDoAvaliador {
     private Usuario marta ;
     private Usuario junior;
 
+    @BeforeClass
+    public static void testandoBeforeClass() {
+        System.out.println("before class");
+    }
+
+    @AfterClass
+    public static void testandoAfterClass() {
+        System.out.println("after class");
+    }
+
+    @Before
+    public void setUp(){
+        this.leiloeiro= new Avaliador();
+        System.out.println("inicializando teste!");
+    }
+
     @Before
     public void criaAvaliador(){
-        leiloeiro = new Avaliador();
         this.joao= new Usuario("João");
         this.jose= new Usuario("Jose");
         this.maria= new Usuario("Maria");
@@ -34,6 +47,10 @@ public class TesteDoAvaliador {
         this.junior= new Usuario("Junior");
     }
 
+    @After
+    public void finaliza() {
+        System.out.println("fim");
+    }
     @Test
     public void deveEntenderLancesEmOrdemCrescente(){
         Leilao leilao = new CriadorDeLeilao().para("Play 3 novo")
@@ -102,16 +119,6 @@ public class TesteDoAvaliador {
     }
 
     @Test
-    public void deveDevolverListaVaziaCasoNaoHajaLances(){
-        Leilao leilao = new Leilao("Play 3 novo");
-
-        leiloeiro.avalia(leilao);
-
-        List<Lance> maiores = leiloeiro.getTresMaiores();
-        assertEquals(0,maiores.size());
-    }
-
-    @Test
     public void deveEntenderLancesEmOrdemRandomica(){
         Leilao leilao = new CriadorDeLeilao().para("Play 3 novo")
                 .lance(joao, 200)
@@ -147,5 +154,11 @@ public class TesteDoAvaliador {
         assertEquals(300, maiores.get(1).getValor(), 0.00001);
         assertEquals(200, maiores.get(2).getValor(), 0.00001);
         assertEquals(100, leiloeiro.getMenorLance(), 0.00001);
+    }
+
+    @Test(expected = RuntimeException.class)
+    public void naoDeveAvaliarLeilaoSemNenhumLance(){
+        Leilao leilao = new CriadorDeLeilao().para("play 3").constroi();
+        leiloeiro.avalia(leilao);
     }
 }

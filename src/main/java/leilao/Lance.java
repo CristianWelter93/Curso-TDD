@@ -6,8 +6,12 @@ public class Lance {
 	private double valor;
 	
 	public Lance(Usuario usuario, double valor) {
-		this.usuario = usuario;
-		this.valor = valor;
+		if(valor <= 0){
+			throw new RuntimeException("O valor do lance não pode ser igual ou inferior a zero");
+		}
+			this.usuario = usuario;
+			this.valor = valor;
+
 	}
 
 	public Usuario getUsuario() {
@@ -16,10 +20,6 @@ public class Lance {
 
 	public double getValor() {
 		return valor;
-	}
-
-	public void setValor(double valor) {
-		this.valor=valor;
 	}
 
 }
