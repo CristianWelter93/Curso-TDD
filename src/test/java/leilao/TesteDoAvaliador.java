@@ -1,3 +1,5 @@
+package leilao;
+
 import leilao.Avaliador;
 import leilao.Lance;
 import leilao.Leilao;

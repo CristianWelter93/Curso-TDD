@@ -1,3 +1,5 @@
+package matematica;
+
 import matematica.MatematicaMaluca;
 import org.junit.Test;
 
